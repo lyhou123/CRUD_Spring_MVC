@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public interface ProductService {
-  List<ProductRespone> productResponeList();
+  List<ProductRespone> productResponeList(String name);
   ProductRespone deleteProduct(int id);
  ProductRespone creatProduct(ProductRequest productRequest);
   ProductRespone updateProduct(int id,ProductRequest productRequest);

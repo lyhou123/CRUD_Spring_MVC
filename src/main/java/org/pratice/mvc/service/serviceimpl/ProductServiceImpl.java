@@ -1,15 +1,16 @@
-package org.pratice.mvc.service;
+package org.pratice.mvc.service.serviceimpl;
 import lombok.RequiredArgsConstructor;
 import org.pratice.mvc.dto.ProductRequest;
 import org.pratice.mvc.dto.ProductRespone;
 import org.pratice.mvc.model.Product;
 import org.pratice.mvc.repository.ProductRepository;
+import org.pratice.mvc.service.ProductService;
 import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
    private final ProductRepository productRepository;
    private ProductRespone MapToProductRespone(Product product)
    {
@@ -25,8 +26,14 @@ public class ProductServiceImpl implements ProductService{
                .imageUrl(productRequest.imageUrl()).build();
    }
     @Override
-    public List<ProductRespone> productResponeList() {
-      return  productRepository.getAllProduct().stream()
+    public List<ProductRespone> productResponeList(String name) {
+        var product = productRepository.getAllProduct();
+        if (!name.isEmpty()){
+             product.stream().filter(
+                    pro-> pro.getTitle().toLowerCase().contains(name.toLowerCase())
+            ).toList();
+        }
+        return  productRepository.getAllProduct().stream()
               .map(this::MapToProductRespone).toList();
     }
     @Override
@@ -59,7 +66,6 @@ public class ProductServiceImpl implements ProductService{
               product.setImageUrl(productRequest.imageUrl());
                 return MapToProductRespone(product);
     }
-
     @Override
     public ProductRespone getProduct(int id) {
       Product products= productRepository.getAllProduct().stream()

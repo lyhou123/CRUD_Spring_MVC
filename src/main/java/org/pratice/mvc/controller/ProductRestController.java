@@ -24,8 +24,8 @@ public class ProductRestController {
     }
 
     @GetMapping("/getAll")
-    public Map<String, Object> getAllProduct() {
-       return respone(productService.productResponeList(),"success", HttpStatus.OK.value());
+    public Map<String, Object> getAllProduct(@RequestParam (defaultValue = "") String name) {
+       return respone(productService.productResponeList(name),"success", HttpStatus.OK.value());
     }
     @DeleteMapping("/{id}")
     public Map<String, Object> deleteProduct(@PathVariable int id) {
