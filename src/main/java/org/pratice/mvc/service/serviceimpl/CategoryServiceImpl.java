@@ -7,6 +7,8 @@ import org.pratice.mvc.repository.CategoryProductRepository;
 import org.pratice.mvc.service.CategoryService;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -56,6 +58,10 @@ public class CategoryServiceImpl implements CategoryService
     @Override
     public CategoryRespone createCategory(CategoryRequest categoryRequest) {
          var category=MapCategoryRequest(categoryRequest);
+       categoryProductRepository.getAllCategory().stream().max(Comparator.comparing(Category::getId))
+                 .map(Category::getId).ifPresentOrElse(
+                         id->category.setId(id+1),
+                         ()->category.setId(1));
          categoryProductRepository.addCategory(category);
          return MapCategoryResopne(category);
     }
